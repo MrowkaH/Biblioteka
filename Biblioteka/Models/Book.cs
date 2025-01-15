@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteka.Models
 {
@@ -9,17 +10,19 @@ namespace Biblioteka.Models
 
         [Required]
         [StringLength(200)]
-        public string Tytuł { get; set; }
+        public string Title { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Autor { get; set; }
+        public string Author { get; set; }
 
         [Required]
         [StringLength(13)]
         public string ISBN { get; set; }
 
         [Required]
-        public int CopiesAvailable { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Number of copies must be non-negative.")]
+        public int CopiesAvailable { get; set; } 
+        public ICollection<Rental> Rentals { get; set; }
     }
 }

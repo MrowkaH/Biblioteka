@@ -4,6 +4,11 @@
 
 <h1>Zaloguj się</h1>
 
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
 <form method="post" action="/Account/Login">
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>

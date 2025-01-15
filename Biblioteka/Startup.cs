@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 public class Startup
 {
@@ -19,12 +20,12 @@ public class Startup
         services.AddControllersWithViews();
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddAuthentication("CookieAuth")
-            .AddCookie("CookieAuth", config =>
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(config =>
             {
-                config.LoginPath = "/Users/Login";
+                config.LoginPath = "/Account/Login";
             });
 
         services.AddAuthorization();

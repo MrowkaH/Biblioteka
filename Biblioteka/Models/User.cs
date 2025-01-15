@@ -1,4 +1,4 @@
-﻿using Biblioteka.Models;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteka.Models
@@ -22,5 +22,7 @@ namespace Biblioteka.Models
 
         public int RoleId { get; set; }
         public Role Role { get; set; }
+
+        public ICollection<Rental> Rentals { get; set; }
     }
 }

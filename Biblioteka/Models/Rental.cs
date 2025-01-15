@@ -14,7 +14,7 @@ namespace Biblioteka.Models
 
         [Required]
         public int UserId { get; set; }
-        public User Użytkownik { get; set; }
+        public User User { get; set; }
 
         [Required]
         public DateTime RentalDate { get; set; }
