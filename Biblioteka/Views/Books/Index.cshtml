@@ -2,7 +2,7 @@
 
 <h1>Available Books</h1>
 
-<table class="table">
+<table class="table" id="books-table">
     <thead>
         <tr>
             <th>Tytuł</th>
@@ -13,23 +13,50 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var book in Model)
-        {
-            <tr>
-                <td>@book.Tytul</td>
-                <td>@book.Autor</td>
-                <td>@book.ISBN</td>
-                <td>@book.DostepneKopie</td>
-                <td>
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <a asp-controller="Rentals"
-                           asp-action="Create"
-                           asp-route-bookId="@book.Id"
-                           class="btn btn-success">Wypożycz</a>
-                    }
-                </td>
-            </tr>
-        }
+        <!-- Dane zostaną wczytane przez JavaScript -->
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Adres API
+            const apiUrl = '/api/BooksApi';
+
+            // Pobierz dane z API
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Błąd podczas pobierania danych z API');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.querySelector("#books-table tbody");
+                    tableBody.innerHTML = ''; // Wyczyszczenie tabeli
+
+                    data.forEach(book => {
+                        // Utwórz wiersz tabeli
+                        const row = document.createElement("tr");
+
+                        row.innerHTML = `
+                            <td>${book.tytul}</td>
+                            <td>${book.autor}</td>
+                            <td>${book.isbn}</td>
+                            <td>${book.dostepneKopie}</td>
+                            <td>
+                                ${book.dostepneKopie > 0 && '@(User.Identity != null && User.Identity.IsAuthenticated)'.toLowerCase() === 'true' ? `
+                                    <a href="/Rentals/Create?bookId=${book.id}" class="btn btn-success">Wypożycz</a>
+                                ` : ''}
+                            </td>
+                        `;
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Wystąpił błąd:', error);
+                });
+        });
+    </script>
+}

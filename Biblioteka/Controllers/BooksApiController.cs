@@ -2,83 +2,107 @@
 using Biblioteka.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
-namespace Biblioteka.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class BooksApiController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BooksApiController : ControllerBase
+    private readonly ApplicationDbContext _context;
+    private readonly ILogger<BooksApiController> _logger;
+
+    public BooksApiController(ApplicationDbContext context, ILogger<BooksApiController> logger)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+        _logger = logger;
+    }
 
-        public BooksApiController(ApplicationDbContext context)
+    [HttpGet]
+    public IActionResult GetBooks()
+    {
+        var books = _context.Books.ToList();
+        return Ok(books);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetBook(int id)
+    {
+        var book = _context.Books.FirstOrDefault(b => b.Id == id);
+        if (book == null)
+            return NotFound();
+
+        return Ok(book);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public IActionResult CreateBook([FromBody] Book book)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
         {
-            _context = context;
-        }
-
-        [HttpGet]
-        public IActionResult GetBooks()
-        {
-            var books = _context.Books.ToList();
-            return Ok(books);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetBook(int id)
-        {
-            var book = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
-                return NotFound();
-
-            return Ok(book);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult CreateBook([FromBody] Book book)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             _context.Books.Add(book);
             _context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while creating a book.");
+            return StatusCode(500, "An error occurred while creating the book.");
         }
 
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult UpdateBook(int id, [FromBody] Book updatedBook)
+        return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult UpdateBook(int id, [FromBody] Book updatedBook)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var book = _context.Books.FirstOrDefault(b => b.Id == id);
+        if (book == null)
+            return NotFound();
+
+        book.Tytul = updatedBook.Tytul;
+        book.Autor = updatedBook.Autor;
+        book.ISBN = updatedBook.ISBN;
+        book.DostepneKopie = updatedBook.DostepneKopie;
+
+        try
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var book = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
-                return NotFound();
-
-            book.Tytul = updatedBook.Tytul;
-            book.Autor = updatedBook.Autor;
-            book.ISBN = updatedBook.ISBN;
-            book.DostepneKopie = updatedBook.DostepneKopie;
-
             _context.SaveChanges();
-            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while updating a book.");
+            return StatusCode(500, "An error occurred while updating the book.");
         }
 
+        return NoContent();
+    }
 
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
-        public IActionResult DeleteBook(int id)
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id}")]
+    public IActionResult DeleteBook(int id)
+    {
+        var book = _context.Books.FirstOrDefault(b => b.Id == id);
+        if (book == null)
+            return NotFound();
+
+        try
         {
-            var book = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
-                return NotFound();
-
             _context.Books.Remove(book);
             _context.SaveChanges();
-            return NoContent();
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while deleting a book.");
+            return StatusCode(500, "An error occurred while deleting the book.");
+        }
+
+        return NoContent();
     }
 }
+

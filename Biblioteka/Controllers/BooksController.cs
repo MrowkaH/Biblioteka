@@ -2,6 +2,7 @@
 using Biblioteka.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -10,10 +11,12 @@ namespace Biblioteka.Controllers
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(ApplicationDbContext context)
+        public BooksController(ApplicationDbContext context, ILogger<BooksController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -23,6 +26,7 @@ namespace Biblioteka.Controllers
                 .ToList();
             return View(availableBooks);
         }
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
@@ -34,6 +38,11 @@ namespace Biblioteka.Controllers
         [HttpPost]
         public IActionResult Create(Book book)
         {
+          /*  if (!ModelState.IsValid)
+            {
+                return View(book);
+            }*/
+
             try
             {
                 _context.Books.Add(book);
@@ -41,12 +50,14 @@ namespace Biblioteka.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Błąd podczas zapisu: {ex.Message}");
+                _logger.LogError(ex, "Error");
+                ModelState.AddModelError(string.Empty, "zle jest debilu");
                 return View(book);
             }
 
-            return RedirectToAction("ManageBooks", "Admin");
+            return RedirectToAction(nameof(AdminController.ManageBooks), "Admin");
         }
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(int id)
@@ -62,6 +73,11 @@ namespace Biblioteka.Controllers
         [HttpPost]
         public IActionResult Edit(Book updatedBook)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(updatedBook);
+            }
+
             var book = _context.Books.FirstOrDefault(b => b.Id == updatedBook.Id);
             if (book == null)
                 return NotFound();
@@ -73,7 +89,7 @@ namespace Biblioteka.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("ManageBooks", "Admin");
+            return RedirectToAction(nameof(AdminController.ManageBooks), "Admin");
         }
 
         [Authorize(Roles = "Admin")]
@@ -98,7 +114,7 @@ namespace Biblioteka.Controllers
             _context.Books.Remove(book);
             _context.SaveChanges();
 
-            return RedirectToAction("ManageBooks", "Admin");
+            return RedirectToAction(nameof(AdminController.ManageBooks), "Admin");
         }
     }
 }
