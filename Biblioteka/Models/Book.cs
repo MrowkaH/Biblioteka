@@ -10,19 +10,20 @@ namespace Biblioteka.Models
 
         [Required]
         [StringLength(200)]
-        public string Title { get; set; }
+        public string Tytul { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Author { get; set; }
+        public string Autor { get; set; }
 
         [Required]
         [StringLength(13)]
         public string ISBN { get; set; }
 
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Number of copies must be non-negative.")]
-        public int CopiesAvailable { get; set; } 
+        [Range(0, int.MaxValue, ErrorMessage = "Ilość kopii musi być nieujemna.")]
+        public int DostepneKopie { get; set; }
+
         public ICollection<Rental> Rentals { get; set; }
     }
 }

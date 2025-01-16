@@ -21,16 +21,43 @@
 
         .content {
             flex: 1;
+            position: relative;
         }
 
         .navbar-brand {
             font-family: 'Lobster', cursive;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-style: italic;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
             color: white !important;
+        }
+
+            .navbar-brand img {
+                max-height: 40px;
+                margin-right: 10px;
+            }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: brightness(0.8);
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.8);
         }
     </style>
 </head>
@@ -38,6 +65,10 @@
     <div class="main-container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark position-relative">
             <div class="container-fluid">
+                <a href="/" class="navbar-brand">
+                    <img src="/images/Logo.png" alt="Logo" />
+                    Nasza Biblioteka
+                </a>
                 <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#hamburgerMenu" aria-controls="hamburgerMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -46,21 +77,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/Books">Książki</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Rentals">Wypożyczenia</a>
-                        </li>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Rentals/MyRentals">Moje Wypożyczenia</a>
+                            </li>
+                        }
                         @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Books/Create">Dodaj Książkę</a>
+                                <a class="nav-link" href="/Admin/Dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/Users/Manage">Zarządzaj Użytkownikami</a>
+                                <a class="nav-link" href="/Books/Create">Dodaj Książkę</a>
                             </li>
                         }
                     </ul>
                 </div>
-                <a href="/" class="navbar-brand">Biblioteka</a>
                 <div class="ms-auto d-flex align-items-center">
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
@@ -75,12 +108,15 @@
                 </div>
             </div>
         </nav>
-        <div class="content container mt-4">
-            @RenderBody()
+        <div class="content">
+            <div class="background-image"></div>
+            <div class="content-container container mt-4">
+                @RenderBody()
+            </div>
         </div>
         <footer class="footer mt-auto py-3 bg-light">
             <div class="container">
-                <span class="text-muted">© 2025 Wypożyczalnia. Wszystkie prawa zastrzeżone.</span>
+                <span class="text-muted">© 2025 Nasza Biblioteka. Wszystkie prawa zastrzeżone.</span>
             </div>
         </footer>
     </div>

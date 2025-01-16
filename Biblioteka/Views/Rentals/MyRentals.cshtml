@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Biblioteka.Models.Rental>
+
+<h1>My Rentals</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Nie masz żadnych wypozyczonych książek.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rental in Model)
+            {
+                <tr>
+                    <td>@rental.Book.Tytul</td>
+                    <td>@rental.Book.Autor</td>
+                    <td>@rental.BorrowDate.ToString("yyyy-MM-dd")</td>
+                    <td>@rental.DueDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (rental.ReturnDate == null)
+                        {
+                            <span class="badge bg-warning text-dark">Aktywne</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Zwrócono</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -5,7 +5,6 @@ namespace Biblioteka.Models
 {
     public class Rental
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -16,9 +15,9 @@ namespace Biblioteka.Models
         public int UserId { get; set; }
         public User User { get; set; }
 
-        [Required]
-        public DateTime RentalDate { get; set; }
-
+        public DateTime BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+
+        public DateTime DueDate { get; set; }
     }
 }

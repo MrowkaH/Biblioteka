@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Biblioteka.Models.Book>
+
+<h1>Manage Books</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Dostępne kopie</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Tytul</td>
+                <td>@book.Autor</td>
+                <td>@book.ISBN</td>
+                <td>@book.DostepneKopie</td>
+                <td>
+                    <a asp-controller="Books"
+                       asp-action="Edit"
+                       asp-route-id="@book.Id"
+                       class="btn btn-warning">
+                        Edit
+                    </a>
+                    <a asp-controller="Books"
+                       asp-action="Delete"
+                       asp-route-id="@book.Id"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

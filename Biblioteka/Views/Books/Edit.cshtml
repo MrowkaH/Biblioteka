@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Biblioteka.Models.Book
+
+<h2>Edit Book</h2>
+
+<form method="post" asp-action="Edit" asp-controller="Books">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Tytul" class="form-label"></label>
+        <input asp-for="Tytul" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Autor" class="form-label"></label>
+        <input asp-for="Autor" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ISBN" class="form-label"></label>
+        <input asp-for="ISBN" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="DostepneKopie" class="form-label"></label>
+        <input asp-for="DostepneKopie" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-controller="Admin" asp-action="ManageBooks" class="btn btn-secondary">Cancel</a>
+</form>

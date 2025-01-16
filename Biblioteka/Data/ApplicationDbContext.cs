@@ -12,6 +12,7 @@ namespace Biblioteka.Data
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Role> Roles { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

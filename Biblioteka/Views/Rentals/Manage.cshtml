@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Biblioteka.Models.Rental>
+
+<h1>Manage Rentals</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>User</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rental in Model)
+        {
+            <tr>
+                <td>@rental.Book.Tytul</td>
+                <td>@rental.User.Name (@rental.User.Email)</td>
+                <td>@rental.BorrowDate.ToString("yyyy-MM-dd")</td>
+                <td>@rental.DueDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <form method="post" asp-action="Cancel" asp-route-id="@rental.Id" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                    <form method="post" asp-action="Extend" asp-route-id="@rental.Id" style="display: inline;">
+                        <button type="submit" class="btn btn-warning">Extend 7 Days</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

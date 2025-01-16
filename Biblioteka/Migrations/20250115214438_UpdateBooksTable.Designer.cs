@@ -3,6 +3,7 @@ using System;
 using Biblioteka.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Biblioteka.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115214438_UpdateBooksTable")]
+    partial class UpdateBooksTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -28,7 +31,7 @@ namespace Biblioteka.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DostepneKopie")
+                    b.Property<int>("DostępneKopie")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ISBN")
@@ -36,7 +39,7 @@ namespace Biblioteka.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Tytul")
+                    b.Property<string>("Tytuł")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
@@ -55,10 +58,7 @@ namespace Biblioteka.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DueDate")
+                    b.Property<DateTime>("RentalDate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("ReturnDate")

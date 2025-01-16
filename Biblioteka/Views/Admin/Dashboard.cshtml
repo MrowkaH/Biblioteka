@@ -1,0 +1,55 @@
+﻿@model dynamic
+
+<h1 class="text-center mb-4">Admin Dashboard</h1>
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Dostępne książki</h5>
+                    <p class="card-text display-6">@Model.BookCount</p>
+                    <p class="card-text">Liczba książek w systemie.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Użytkownicy</h5>
+                    <p class="card-text display-6">@Model.UserCount</p>
+                    <p class="card-text">Wszyscy zarejestrowani użytkownicy.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Aktywne wypożyczenia</h5>
+                    <p class="card-text display-6">@Model.ActiveRentals</p>
+                    <p class="card-text">Ile książek jest obecnie wypożyczonych.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Zarządzaj wypożyczeniami</h5>
+                    <a href="/Rentals/Manage" class="btn btn-light mt-2">Idź</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-4">
+        <div class="col-md-6">
+            <a href="/Admin/ManageBooks" class="btn btn-primary w-100">Zarządzaj Książkami</a>
+        </div>
+        <div class="col-md-6">
+            <a href="/Admin/ManageUsers" class="btn btn-secondary w-100">Zarządzaj Użytkownikami</a>
+        </div>
+    </div>
+</div>

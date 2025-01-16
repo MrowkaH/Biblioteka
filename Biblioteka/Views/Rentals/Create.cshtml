@@ -1,5 +1,17 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Biblioteka.Models.Rental
+
+<h2>Wypożycz książkę</h2>
+
+<p><strong>Tytuł:</strong> @Model.Book.Tytul</p>
+<p><strong>Autor:</strong> @Model.Book.Autor</p>
+<p><strong>ISBN:</strong> @Model.Book.ISBN</p>
+<p><strong>Maksymalny okres:</strong> 14 dni</p>
+
+<form method="post" asp-action="Create" asp-controller="Rentals">
+    <input type="hidden" asp-for="BookId" />
+    <input type="hidden" asp-for="BorrowDate" />
+    <input type="hidden" asp-for="DueDate" />
+
+    <button type="submit" class="btn btn-primary">Potwierdź wypożyczenie</button>
+    <a asp-action="Index" asp-controller="Books" class="btn btn-secondary">Anuluj</a>
+</form>

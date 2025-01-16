@@ -2,22 +2,13 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Welcome to the Library Management System</h1>
+
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p>Welcome, @User.Identity.Name!</p>
-
-    @if (User.IsInRole("Admin"))
-    {
-        <h2>Admin Options</h2>
-        <ul>
-            <li><a href="/Books/Create">Add New Book</a></li>
-            <li><a href="/Users/Manage">Manage Users</a></li>
-        </ul>
-    }
+    <p>Witaj, @User.Identity.Name!</p>
 }
 else
 {
-    <p>Please <a href="/Account/Login">log in</a> to access more features.</p>
+    <p>Musisz się <a href="/Account/Login">zalogować</a> aby otrzymać dostęp do reszty funkcji.</p>
 }

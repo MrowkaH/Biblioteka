@@ -1,5 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Biblioteka.Models.User
+
 @{
+    ViewData["Title"] = "Edit User";
 }
+
+<h1>Edit User</h1>
+
+<form method="post" asp-action="Edit" asp-controller="Users">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="RoleId" class="form-label">Rola</label>
+        <select asp-for="RoleId"
+                asp-items="@(new SelectList(ViewBag.Roles, "Id", "Name", Model.RoleId))"
+                class="form-control">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="ManageUsers" asp-controller="Admin" class="btn btn-secondary">Anuluj</a>
+</form>
