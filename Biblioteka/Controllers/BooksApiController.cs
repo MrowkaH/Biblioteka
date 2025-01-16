@@ -47,8 +47,8 @@ public class BooksApiController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while creating a book.");
-            return StatusCode(500, "An error occurred while creating the book.");
+            _logger.LogError(ex, "Error");
+            return StatusCode(500, "zletworzy");
         }
 
         return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
@@ -76,8 +76,8 @@ public class BooksApiController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while updating a book.");
-            return StatusCode(500, "An error occurred while updating the book.");
+            _logger.LogError(ex, "Error");
+            return StatusCode(500, "editzly");
         }
 
         return NoContent();
@@ -98,8 +98,8 @@ public class BooksApiController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while deleting a book.");
-            return StatusCode(500, "An error occurred while deleting the book.");
+            _logger.LogError(ex, "Error");
+            return StatusCode(500, "zle usuwa ksiazki");
         }
 
         return NoContent();
